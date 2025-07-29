@@ -1,0 +1,72 @@
+//Arduino Framework
+#include <Arduino.h>
+#include <driver/temp_sensor.h>
+
+//For Triggering Bootmode in Software
+#include "esp_system.h"
+#include "soc/rtc_cntl_reg.h"
+
+#include "modbus.h"
+#include "modbus_tcp.h"
+
+
+void setup() 
+{
+  init_Modbus_Rtu();
+  init_modbus_tcp();
+}
+
+
+void loop() 
+{
+  tcp_mb.task();
+  rtu_mb.task();
+  /*
+  RTUputFloatToBuf(230.1, PHASE_1_LINE_TO_NEUTRAL_VOLTS);
+  RTUputFloatToBuf(235.6, PHASE_2_LINE_TO_NEUTRAL_VOLTS);
+  RTUputFloatToBuf(231.7, PHASE_3_LINE_TO_NEUTRAL_VOLTS);
+  */
+  forwardTCPtoRTU(PHASE_1_LINE_TO_NEUTRAL_VOLTS);
+  forwardTCPtoRTU(PHASE_2_LINE_TO_NEUTRAL_VOLTS);
+  forwardTCPtoRTU(PHASE_3_LINE_TO_NEUTRAL_VOLTS);
+  forwardTCPtoRTU(PHASE_1_CURRENT);
+  forwardTCPtoRTU(PHASE_2_CURRENT);
+  forwardTCPtoRTU(PHASE_3_CURRENT);
+  forwardTCPtoRTU(PHASE_1_ACTIVE_POWER);
+  forwardTCPtoRTU(PHASE_2_ACTIVE_POWER);
+  forwardTCPtoRTU(PHASE_3_ACTIVE_POWER);
+  forwardTCPtoRTU(PHASE_1_APPARENT_POWER);
+  forwardTCPtoRTU(PHASE_2_APPARENT_POWER);
+  forwardTCPtoRTU(PHASE_3_APPARENT_POWER);
+  forwardTCPtoRTU(PHASE_1_REACTIVE_POWER);
+  forwardTCPtoRTU(PHASE_2_REACTIVE_POWER);
+  forwardTCPtoRTU(PHASE_3_REACTIVE_POWER);
+  forwardTCPtoRTU(PHASE_1_POWER_FACTOR);
+  forwardTCPtoRTU(PHASE_2_POWER_FACTOR);
+  forwardTCPtoRTU(PHASE_3_POWER_FACTOR);
+  forwardTCPtoRTU(AVERAGE_LINE_TO_NEUTRAL_VOLTS);
+  forwardTCPtoRTU(AVERAGE_LINE_CURRENT);
+  forwardTCPtoRTU(SUM_OF_LINE_CURRENTS);
+  forwardTCPtoRTU(TOTAL_SYSTEM_POWER);
+  forwardTCPtoRTU(TOTAL_SYSTEM_VOLT_AMPS);
+  forwardTCPtoRTU(TOTAL_SYSTEM_VAR);
+  forwardTCPtoRTU(TOTAL_SYSTEM_POWER_FACTOR);
+  forwardTCPtoRTU(FREQUENCY_OF_SUPPLY_VOLTAGES);
+  forwardTCPtoRTU(IMPORT_ACTIVE_ENERGY);
+  forwardTCPtoRTU(EXPORT_ACTIVE_ENERGY);
+  forwardTCPtoRTU(LINE_1_TO_LINE_2_VOLTS);
+  forwardTCPtoRTU(LINE_2_TO_LINE_3_VOLTS);
+  forwardTCPtoRTU(LINE_3_TO_LINE_1_VOLTS);
+  forwardTCPtoRTU(AVERAGE_LINE_TO_LINE_VOLTS);
+  forwardTCPtoRTU(NEUTRAL_CURRENT);
+  forwardTCPtoRTU(TOTAL_ACTIVE_ENERGY);
+  forwardTCPtoRTU(TOTAL_REACTIVE_ENERGY);
+  forwardTCPtoRTU(RESETTABLE_TOTAL_ACTIVE_ENERGY);
+  forwardTCPtoRTU(RESETTABLE_TOTAL_REACTIVE_ENERGY);
+  forwardTCPtoRTU(RESETTABLE_IMPORT_ACTIVE_ENERGY);
+  forwardTCPtoRTU(RESETTABLE_EXPORT_ACTIVE_ENERGY);
+  forwardTCPtoRTU(NET_KWH_IMPORT_EXPORT);
+  forwardTCPtoRTU(TOTAL_IMPORT_ACTIVE_POWER);
+  forwardTCPtoRTU(TOTAL_EXPORT_ACTIVE_POWER);
+  yield();
+}
